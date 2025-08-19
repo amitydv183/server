@@ -57,16 +57,17 @@ class userController {
         process.env.JWT_SECRET,
         { expiresIn: "2d"}
       );
-      console.log(token)
+     // console.log(token)
      // res.status(200).json({ message: "login successful" });
       //sending token to http
 
-      res.cookie("token", token, {
-  httpOnly: true,
-  secure: false,       // must be false for HTTP (not HTTPS)
-  sameSite: "lax"      // ensures cookie is sent with cross-origin requests
-});
-console.log("Cookies:", req.cookies);
+        res.cookie("token", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production", // true for HTTPS
+      sameSite: "None", // ✅ required for cross-site cookies
+      maxAge: 2 * 24 * 60 * 60 * 1000, // 2 days
+    });
+//console.log("Cookies:", req.cookies);
 
 res.status(200).json({
   
