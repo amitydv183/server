@@ -52,8 +52,11 @@ class userController {
       }
 
       //token create
-
-      const token = jwt.sign({ ID : user.id},'anivan')
+     
+      const token = jwt.sign({ ID : user.id},
+        process.env.JWT_SECRET,
+        { expiresIn: "2d"}
+      );
       console.log(token)
      // res.status(200).json({ message: "login successful" });
       //sending token to http

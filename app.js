@@ -1,12 +1,13 @@
 const express= require('express')
-// console.log(express)
+
 const app=express()
-const port=4000
+
 const web = require('./routes/web')
 const connectDB = require('./db/connectDB')
 const fileupload = require('express-fileupload')
 const cors=require("cors");
 const cookieParser = require('cookie-parser')
+require('dotenv').config();
 
 
 app.use(cookieParser())
@@ -35,5 +36,5 @@ app.use(express.json()) // to parse JSON bodies
 // }) no longer needed
 
 app.use('/api', web)
-app.listen(port, console.log('server start localhost :4000'))
+app.listen(process.env.PORT, console.log('server start localhost :4000'))
 
