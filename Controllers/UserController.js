@@ -61,9 +61,12 @@ class userController {
      // res.status(200).json({ message: "login successful" });
       //sending token to http
 
-      res.cookie("token",token,{
-        httpOnly:true,
-      });
+      res.cookie("token", token, {
+  httpOnly: true,
+  secure: false,       // must be false for HTTP (not HTTPS)
+  sameSite: "lax"      // ensures cookie is sent with cross-origin requests
+});
+console.log("Cookies:", req.cookies);
 
 res.status(200).json({
   
