@@ -57,7 +57,7 @@ class userController {
         process.env.JWT_SECRET,
         { expiresIn: "2d"}
       );
-      console.log(token)
+      //console.log(token)
      // res.status(200).json({ message: "login successful" });
       //sending token to http
 
