@@ -5,38 +5,38 @@ const jwt = require('jsonwebtoken');
 class userController {
 
   static register = async (req, res) => {
-    try {
-      //console.log(req.body)
-      const { name, email, password } = req.body;
-      const existingUser =await userModel.findOne({ email });
-      if (existingUser) {
-        return res.status(400).json({
-          msg:"use another mail"
-        });
-      }
+  try {
+    const { name, email, password, secret } = req.body;
 
-      //   const emailcheck = userModel.findone({ email });
-      //   if (emailcheck) {
-      //     return res.json({
-      //       msg: "email already exist",
-      //     });
-      //   }
-      //hash password
-      const hashPassword = await bcrypt.hash(password, 10);
-
-      const data = await userModel.create({
-        name,
-        email,
-        password: hashPassword,
-      });
-      res.json({
-        data,
-        msg: "user registered",
-      });
-    } catch (error) {
-      console.log(error);
+    const existingUser = await userModel.findOne({ email });
+    if (existingUser) {
+      return res.status(400).json({ msg: "use another mail" });
     }
-  };
+
+    const hashPassword = await bcrypt.hash(password, 10);
+
+    // Decide role
+    let role = "student";
+    if (secret && secret === "amitkr") {
+      role = "admin";
+    }
+
+    const data = await userModel.create({
+      name,
+      email,
+      password: hashPassword,
+      role,
+    });
+
+    res.json({
+      msg: "user registered",
+      data,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ msg: "Server error" });
+  }
+};
 
   static login = async (req, res) => {
     try {
